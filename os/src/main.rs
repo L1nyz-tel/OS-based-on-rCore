@@ -3,7 +3,7 @@
 #![feature(panic_info_message)]
 #[macro_use]
 mod console;
-mod panic;
+mod lang_item;
 mod sbi;
 
 use core::arch::global_asm;
@@ -24,5 +24,5 @@ fn clear_bss() {
 pub extern "C" fn rust_main() -> ! {
     clear_bss();
     println!("Hello rCore-Tutorial!");
-    panic!("end of rust_main")
+    panic!("end of rust_main");
 }

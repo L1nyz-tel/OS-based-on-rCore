@@ -1,5 +1,3 @@
-// use core::fmt::Write;
-
 use crate::sbi::*;
 use core::fmt::{self, Write};
 
