@@ -3,11 +3,14 @@
 #![feature(panic_info_message)]
 #[macro_use]
 mod console;
+pub mod batch;
 mod lang_item;
 mod sbi;
+mod sync;
 
 use core::arch::global_asm;
 global_asm!(include_str!("entry.asm"));
+global_asm!(include_str!("link_app.S"));
 
 fn clear_bss() {
     extern "C" {
