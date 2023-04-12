@@ -1,7 +1,5 @@
-
-use crate::sbi::shutdown;
+use crate::{sbi::shutdown, stack_trace::print_stack_trace};
 use core::panic::PanicInfo;
-
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
@@ -15,5 +13,8 @@ fn panic(info: &PanicInfo) -> ! {
     } else {
         println!("Panicked: {}", info.message().unwrap());
     }
+    // unsafe {
+        // print_stack_trace();
+    // }
     shutdown()
 }

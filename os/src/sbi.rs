@@ -4,22 +4,22 @@
 use core::arch::asm;
 
 // legacy extensions: ignore fid
-const SBI_SET_TIMER : usize = 0;
-const SBI_CONSOLE_PUTCHAR : usize = 1;
-const SBI_CONSOLE_GETCHAR : usize = 2;
-const SBI_CLEAR_IPI : usize = 3;
-const SBI_SEND_IPI : usize = 4;
-const SBI_REMOTE_FENCE_I : usize = 5;
-const SBI_REMOTE_SFENCE_VMA : usize = 6;
-const SBI_REMOTE_SFENCE_VMA_ASID : usize = 7;
-const SBI_SHUTDOWN : usize = 8;
+const SBI_SET_TIMER: usize = 0;
+const SBI_CONSOLE_PUTCHAR: usize = 1;
+const SBI_CONSOLE_GETCHAR: usize = 2;
+const SBI_CLEAR_IPI: usize = 3;
+const SBI_SEND_IPI: usize = 4;
+const SBI_REMOTE_FENCE_I: usize = 5;
+const SBI_REMOTE_SFENCE_VMA: usize = 6;
+const SBI_REMOTE_SFENCE_VMA_ASID: usize = 7;
+const SBI_SHUTDOWN: usize = 8;
 
 // system reset extension
 const SRST_EXTENSION: usize = 0x53525354;
 
 // SBI 调用
 #[inline(always)]
-fn sbi_call(which:usize, arg0: usize, arg1: usize, arg2: usize) -> usize {
+fn sbi_call(which: usize, arg0: usize, arg1: usize, arg2: usize) -> usize {
     let ret;
     unsafe {
         asm! {
@@ -33,7 +33,7 @@ fn sbi_call(which:usize, arg0: usize, arg1: usize, arg2: usize) -> usize {
     ret
 }
 
-pub fn console_putchar(c : usize) {
+pub fn console_putchar(c: usize) {
     sbi_call(SBI_CONSOLE_PUTCHAR, c, 0, 0);
 }
 

@@ -1,4 +1,3 @@
-
 use crate::batch::run_next_app;
 
 pub fn sys_exit(exit_code: i32) -> ! {

@@ -6,7 +6,7 @@ const SYSCALL_EXIT: usize = 93;
 fn syscall(id: usize, args: [usize; 3]) -> isize {
     let mut ret: isize;
     unsafe {
-        asm!{
+        asm! {
             "ecall",
             inlateout("x10") args[0] => ret,
             in("x11") args[1],

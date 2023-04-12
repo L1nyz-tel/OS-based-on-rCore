@@ -12,11 +12,10 @@ impl Write for Stdout {
     }
 }
 
-
 /// 打印由 [`core::format_args!`] 格式化后的数据
-/// 
+///
 /// [`print!`] 和 [`println!`] 宏都将展开成此函数
-/// 
+///
 /// [`core::format_args!`]: https://doc.rust-lang.org/nightly/core/macro.format_args.html
 
 pub fn print(args: fmt::Arguments) {
@@ -24,7 +23,7 @@ pub fn print(args: fmt::Arguments) {
 }
 
 /// 实现类似于标准库中的 `print!` 宏
-/// 
+///
 /// 使用实现了 [`core::fmt::Write`] trait 的 [`console::Stdout`]
 #[macro_export]
 macro_rules! print {
@@ -34,7 +33,7 @@ macro_rules! print {
 }
 
 /// 实现类似于标准库中的 `println!` 宏
-/// 
+///
 /// 使用实现了 [`core::fmt::Write`] trait 的 [`console::Stdout`]
 #[macro_export]
 macro_rules! println {
@@ -42,5 +41,3 @@ macro_rules! println {
         $crate::console::print(format_args!(concat!($fmt, "\n") $(, $($arg)+)?));
     }
 }
-
-

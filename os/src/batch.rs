@@ -1,6 +1,5 @@
-
-use crate::{sync::UPSafeCell, trap::TrapContext};
-use core::{arch::asm};
+use crate::{sbi::shutdown, sync::UPSafeCell, trap::TrapContext};
+use core::arch::asm;
 use lazy_static::*;
 const MAX_APP_NUM: usize = 16;
 const APP_BASE_ADDRESS: usize = 0x80400000;
@@ -55,11 +54,14 @@ impl AppManager {
         self.currrent_app
     }
     pub fn move_to_next_app(&mut self) {
-        self.currrent_app = (self.currrent_app + 1) % self.num_app;
+        self.currrent_app = (self.currrent_app + 1);
     }
-    pub fn load_app(&self, idx: usize) {
+    unsafe fn load_app(&self, idx: usize) {
         if idx >= self.num_app {
             panic!("Invalid app index");
+            shutdown();
+            // use crate::board::QEMUExit;
+            // crate::board::QEMU_EXIT_HANDLE.exit_success();
         }
 
         println!("[kernel] Loading app_{}", idx);
@@ -76,10 +78,9 @@ impl AppManager {
         let app_dst =
             unsafe { core::slice::from_raw_parts_mut(APP_BASE_ADDRESS as *mut u8, app_code.len()) };
         app_dst.copy_from_slice(app_code);
+
         // memory fence about fetching the instruction memory
-        unsafe {
-            asm!("fence.i");
-        }
+        asm!("fence.i");
     }
 }
 
@@ -98,16 +99,17 @@ pub fn run_next_app() -> ! {
         app_manager.load_app(current_app);
     }
     app_manager.move_to_next_app();
-    
-    drop(app_manager);
+
+    drop(app_manager); // explicitly drops the exclusive access to the APP_MANAGER, allowing other parts of the code to access and modify it again.
 
     extern "C" {
         fn __restore(cx_addr: usize);
     }
     unsafe {
-        __restore(KERNEL_STACK.push_context(
-            TrapContext::app_init_context(APP_BASE_ADDRESS, USER_STACK.get_sp())
-        ) as *const _ as usize);
+        __restore(KERNEL_STACK.push_context(TrapContext::app_init_context(
+            APP_BASE_ADDRESS,
+            USER_STACK.get_sp(),
+        )) as *const _ as usize);
     }
     panic!("Unreachable in batch::run_current_app!");
 }
@@ -141,8 +143,6 @@ impl KernelStack {
             *cx_ptr = cx;
         }
 
-        unsafe{
-            cx_ptr.as_mut().unwrap()
-        }
+        unsafe { cx_ptr.as_mut().unwrap() }
     }
 }
