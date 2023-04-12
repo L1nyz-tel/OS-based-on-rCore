@@ -7,6 +7,8 @@ pub mod batch;
 mod lang_item;
 mod sbi;
 mod sync;
+mod trap;
+mod syscall;
 
 use core::arch::global_asm;
 global_asm!(include_str!("entry.asm"));

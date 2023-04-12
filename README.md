@@ -1,6 +1,6 @@
-# TELOS-based-on-rCore
+# OS-based-on-rCore
 
-TELOS-lab starts from March 18th
+OS-lab starts from March 18th
 
 [notes](./notes/)
 
@@ -13,6 +13,7 @@ TELOS-lab starts from March 18th
 
 - `bootloader/`：Qemu 模拟器开机时用来初始化的引导加载程序
 - `os/`：内核代码
+- `user/`: 用户态代码
 
 ## 构建和运行
 
@@ -20,5 +21,5 @@ TELOS-lab starts from March 18th
 
 1. 在本地安装 Rust 和 QEMU
 2. 进入 `os`，命令 `make run` 启动
-    - GDB 调试请使用 `make debug-server` `make debug-client`
-
+   - GDB 调试请使用 `make debug-server` `make debug-client`
+3. to be continued......
