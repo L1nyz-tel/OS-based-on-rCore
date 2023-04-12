@@ -1,4 +1,4 @@
-use crate::{sbi::shutdown, sync::UPSafeCell, trap::TrapContext};
+use crate::{sync::UPSafeCell, trap::TrapContext};
 use core::arch::asm;
 use lazy_static::*;
 const MAX_APP_NUM: usize = 16;
@@ -54,12 +54,11 @@ impl AppManager {
         self.currrent_app
     }
     pub fn move_to_next_app(&mut self) {
-        self.currrent_app = (self.currrent_app + 1);
+        self.currrent_app = self.currrent_app + 1;
     }
     unsafe fn load_app(&self, idx: usize) {
         if idx >= self.num_app {
             panic!("Invalid app index");
-            shutdown();
             // use crate::board::QEMUExit;
             // crate::board::QEMU_EXIT_HANDLE.exit_success();
         }

@@ -23,3 +23,5 @@ OS-lab starts from March 18th
 2. 进入 `os`，命令 `make run` 启动
    - GDB 调试请使用 `make debug-server` `make debug-client`
 3. to be continued......
+
+![](https://i.328888.xyz/2023/04/12/iXn4fQ.png)
