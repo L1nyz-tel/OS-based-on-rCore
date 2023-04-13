@@ -67,5 +67,5 @@ pub fn rust_main() -> ! {
     batch::init();
     batch::run_next_app();
 
-    panic!("end of rust_main");
+    // panic!("end of rust_main");
 }
